@@ -2,28 +2,78 @@ public class Tools {
     private Tools(){}
 
     //计算器1：天数转年份
-    public static Date calculator1(int day) {
+    public static Date day_to_year(int day) {
 
-        //先算年数，考虑闰年的情况
-        int year = 1;
-        while (day >= 366) {
+        //先整除算年数，然后求余
+        int year = day / 365;
+        day %= 365;
 
-            //闰年：年数能被4整除
-            if (year % 4 == 0 || year % 400 != 0)
-                day -= 366;
-
-            //非闰年：世纪年不能被400整除或者普通年不能被4整除
-            else
-                day -= 365;
-
-            //算完一次年数加一
-            year++;
-        }
-
-        //再算月数，要考虑闰二月的情况
-        int month = 1;
-        while(day > 31) {
+        //再算月数，需要考虑大小月日期不同
+        //大月31天，小月30天，二月28天（不考虑闰年）
+        int month = 0;
+        while (day > 30) {
             switch (month) {
+                //大月31天
+                case 0:
+                case 2:
+                case 4:
+                case 6:
+                case 7:
+                case 9:
+                case 11: {
+                    day -= 31;
+                    break;
+                }
+                //小月30天
+                case 3:
+                case 5:
+                case 8:
+                case 10: {
+                    day -= 30;
+                    break;
+                }
+                //二月28天
+                case 1: day -= 28;
+            }
+            //计算一次月数加一
+            month++;
+        }
+        //返回日期
+        return new Date(year, month, day);
+    }
+
+    //计算器2：日期加天数
+    public static void date_plus_day(Date date, int days) {
+
+        //预处理：将日期调整为整年
+        //将days减去当前年份的剩余天数，然后将日期重置到下年的1月1日
+        int dayOfYear;
+        if (date.year % 4 == 0 || date.year % 400 == 0)
+            dayOfYear = 366;
+        else
+            dayOfYear = 365;
+        int dayCount = getDayCount(date);
+        days -= dayOfYear - dayCount;
+
+        date.year++;
+        date.month = date.day = 1;
+
+        //然后对days进行年份换算
+        Date date1 = day_to_year(days);
+
+        //然后年份直接相加，月份和天需要进行判断在相加
+        date.year += date1.year;
+
+
+
+        System.out.println(dayCount);
+        return ;
+    }
+
+    private static int getDayCount(Date date) {
+        int dayCount = 0;   //计算当前年份的剩余天数
+        for (int i = 1; i < date.month; i++) {
+            switch (i) {
                 case 1:
                 case 3:
                 case 5:
@@ -31,26 +81,25 @@ public class Tools {
                 case 8:
                 case 10:
                 case 12: {
-                    day -= 31;
+                    dayCount += 31;
                     break;
                 }
                 case 4:
                 case 6:
                 case 9:
                 case 11: {
-                    day -= 30;
+                    dayCount += 30;
                     break;
                 }
                 case 2: {
-                    if (year % 4 == 0 || year % 400 != 0)
-                        day -= 29;
+                    if (date.year % 4 == 0 || date.year % 400 == 0)
+                        dayCount += 29;
                     else
-                        day -= 28;
+                        dayCount += 28;
                 }
             }
-            month++;
         }
-
-        return new Date(year - 1, month - 1, day + 1);
+        dayCount += date.day - 1;
+        return dayCount;
     }
 }
