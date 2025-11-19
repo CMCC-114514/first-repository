@@ -81,32 +81,31 @@ public class Tools {
         return dayCount;
     }
 
-    //计算器2：日期加天数
+    //计算器2：日期推算
     //直接在传入的日期上操作
+    //需要考虑两种情况：闰年和平年
     public static Date date_plus_day(Date date, int numOfDays) {
 
-        //需要考虑两种情况：天数小于365和大于365
-        //小于365天：
-        //预处理：将日期调整为整年
-        //第一步：将days减去当前年份的剩余天数
-        int dayOfYear;  //一年的天数
-        if (yearCheck(date.year))
-            dayOfYear = 366;
-        else
-            dayOfYear = 365;
+        while (numOfDays >= 365){
 
-        int dayCount = getDayCount(date);   //当前年份已经过去的天数
-        System.out.println(dayCount);
+            //预处理：将日期调整为整年
+            //第一步：将days减去当前年份的剩余天数
+            int dayOfYear;  //一年的天数
+            if (yearCheck(date.year))
+                dayOfYear = 366;
+            else
+                dayOfYear = 365;
 
-        int dayLeft = dayOfYear - dayCount;  //当前年份剩余的天数
-        System.out.println(dayLeft);
+            int dayCount = getDayCount(date);   //当前年份已经过去的天数
 
-        numOfDays -= dayLeft;
-        System.out.println(numOfDays);
+            int dayLeft = dayOfYear - dayCount;  //当前年份剩余的天数
 
-        //第二步：将日期重置到下年的1月1日
-        date.year++;
-        date.month = date.day = 1;
+            numOfDays -= dayLeft;   //将天数减去当前年份剩余的天数，表示跳过这一年
+
+            //第二步：将日期重置到下年的1月1日
+            date.year++;
+            date.month = date.day = 1;
+        }
 
         //然后对days进行年份换算
         Date addend = day_to_year(numOfDays);
@@ -116,6 +115,7 @@ public class Tools {
         date.month += addend.month;
         date.day += addend.day;
 
+        //返回日期
         return date;
     }
 }

@@ -5,9 +5,11 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         //int day = sc.nextInt();
 
-        Date d = new Date(2025,11,19);
-        d = Tools.date_plus_day(d, 6688);
-        d.showDate();
+        Date d1 = new Date(1145,1,4);
+        d1 = Tools.date_plus_day(d1, 114514);
+        //Date d2 = Tools.day_to_year(350234);
+        d1.showDate();
+        //d2.showNumOfYears();
 
     }
 }
