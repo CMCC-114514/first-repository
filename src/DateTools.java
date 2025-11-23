@@ -8,13 +8,17 @@ public class DateTools {
         int year = numOfDay / 365;
         numOfDay %= 365;
 
+        //然后考虑闰年
+        //直接在numOfDay上减去闰年的年数即可
+        numOfDay -= year / 4;
+
         //再算月数，需要考虑大小月日期不同
         //大月31天，小月30天，二月28天（不考虑闰年）
         int month = 0;  //表示几个月（月数-1）
         while (numOfDay > 30) {
 
             //大小月判定
-            numOfDay -= Helpers.monthCheck(month + 1);
+            numOfDay -= Helpers.getDayOfMonth(month + 1, 1);
 
             //计算一次月数加一
             month++;
@@ -28,18 +32,14 @@ public class DateTools {
 
     //计算器2：日期推算
     //直接在传入的日期上操作
-    //需要考虑两种情况：闰年和平年
+    //需要考虑闰年和平年
     public static Date date_plus_day(Date date, int numOfDays) {
 
+        //预处理：将日期调整为整年
         while (numOfDays >= 365){
 
-            //预处理：将日期调整为整年
             //第一步：将days减去当前年份的剩余天数
-            int dayOfYear;  //一年的天数
-            if (Helpers.yearCheck(date.year))
-                dayOfYear = 366;
-            else
-                dayOfYear = 365;
+            int dayOfYear = Helpers.yearCheck(date.year) ? 366 : 365;  //一年的天数
 
             int dayCount = Helpers.getDayCount(date);   //当前年份已经过去的天数
 
@@ -72,30 +72,30 @@ public class DateTools {
     public static int date_interval(Date startDate, Date endDate) {
         int dateInterval = 0;
 
-        //先算年份
-        int startYear = startDate.year;     //起始年
-        int endYear = endDate.year;     //结束年
-        //如果起始年大于结束年，返回-1
-        if (startYear > endYear)
-            return -1;
+        //将起始日期调到和结束日期相同
 
-        //否则从起始年开始依次加上每年的日期
-        else {
-            for (int i = startYear; i < endYear; i++) {
-                dateInterval += Helpers.yearCheck(i + 1) ? 366 : 365;
-            }
+        //调日
+        if (startDate.day > endDate.day) {
+            dateInterval += Helpers.getDayOfMonth(startDate.month, startDate.year) - (startDate.day - endDate.day);
+            startDate.month++;
+        } else {
+            dateInterval += endDate.day - startDate.day;
         }
+        startDate.day = endDate.day;
 
-        //然后算月份
-        int startMonth = startDate.month;   //起始月
-        int endMonth = endDate.month;   //结束月
-        int numOfDay;
-        //如果结束月大于起始月，直接从起始月开始加上每年的日期
-        if (endMonth > startMonth) {
-            numOfDay = Helpers.getDayOfMonth(startDate, endDate);
-        } else
-            numOfDay = (Helpers.yearCheck(endYear + 1) ? 366 : 365) - Helpers.getDayOfMonth(endDate, startDate);
-        dateInterval += numOfDay;
+        //调月
+        if (startDate.month > endDate.month) {
+            dateInterval += Helpers.yearCheck(startDate.year + 1) ? 366 : 365 - Helpers.getDayCount(endDate, startDate);
+            startDate.year++;
+        } else {
+            dateInterval += Helpers.getDayCount(startDate, endDate);
+        }
+        startDate.month += endDate.month;
+
+        //计算整年
+        for (int i = startDate.year; i < endDate.year; i++) {
+            dateInterval += Helpers.yearCheck(i) ? 366 : 365;
+        }
 
         return dateInterval;
     }
