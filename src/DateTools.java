@@ -73,9 +73,8 @@ public class DateTools {
         int dateInterval = 0;
 
         //将起始日期调到和结束日期相同
-
         //调日
-        if (startDate.day > endDate.day) {
+        if (startDate.day > endDate.day) {      //如果结束日期的天数大于起始日期，就将整月天数减去两日期之间间隔的天数
             dateInterval += Helpers.getDayOfMonth(startDate.month, startDate.year) - (startDate.day - endDate.day);
             startDate.month++;
         } else {
@@ -84,7 +83,7 @@ public class DateTools {
         startDate.day = endDate.day;
 
         //调月
-        if (startDate.month > endDate.month) {
+        if (startDate.month > endDate.month) {      //月份同理
             dateInterval += Helpers.yearCheck(startDate.year + 1) ? 366 : 365 - Helpers.getDayCount(endDate, startDate);
             startDate.year++;
         } else {
@@ -92,7 +91,7 @@ public class DateTools {
         }
         startDate.month += endDate.month;
 
-        //计算整年
+        //最后计算整年的天数
         for (int i = startDate.year; i < endDate.year; i++) {
             dateInterval += Helpers.yearCheck(i) ? 366 : 365;
         }
