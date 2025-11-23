@@ -14,11 +14,11 @@ public class Date {
         this.day = day;
     }
 
-    public void showDate() {
-        System.out.println(year + "年" + month + "月" + day + "日");
+    public String showDate() {
+        return year + "年" + month + "月" + day + "日";
     }
 
-    public void showNumOfYears() {
-        System.out.println(year + "年" + month + "个月" + day + "天");
+    public String showNumOfYears() {
+        return year + "年" + month + "个月" + day + "天";
     }
 }
