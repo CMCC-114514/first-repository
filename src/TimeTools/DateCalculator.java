@@ -1,5 +1,8 @@
-public class DateTools {
-    private DateTools(){}
+package TimeTools;
+
+//日期计算器
+public class DateCalculator {
+    private DateCalculator(){}
 
     //计算器1：天数转年份
     public static Date day_to_year(int numOfDay) {
