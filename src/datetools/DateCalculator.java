@@ -1,4 +1,4 @@
-package TimeTools;
+package datetools;
 
 //日期计算器
 public class DateCalculator {
@@ -27,7 +27,7 @@ public class DateCalculator {
             month++;
         }
 
-        //返回日期
+        //输出并返回日期
         return new Date(year, month, numOfDay);
     }
 
@@ -64,6 +64,7 @@ public class DateCalculator {
         date.day += addend.day;
 
         //返回日期
+        date.showDate();
         return date;
     }
 

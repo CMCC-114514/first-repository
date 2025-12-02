@@ -1,4 +1,4 @@
-package TimeTools;
+package timetools;
 
 //时间计算器
 public class TimeCalculator {
