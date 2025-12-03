@@ -28,7 +28,7 @@ public class Run {
     static Scanner sc = new Scanner(System.in);
 
     //主函数
-    static void main() {
+    public static void main() {
         menu();
         String choose = sc.next();
         clearConsole();
@@ -36,7 +36,7 @@ public class Run {
             case DAY_TO_YEAR: {
                 System.out.print("输入天数：");
                 int num = sc.nextInt();
-                DateCalculator.day_to_year(num).showNumOfYears();
+                Calculators.Conversion(num).showNumOfYears();
                 break;
             }
             case DATE_PLUS_DAY: {
@@ -45,9 +45,12 @@ public class Run {
                 date1.month = sc.nextInt();
                 date1.day = sc.nextInt();
 
-                System.out.print("输入往后推算的天数：");
+                System.out.print("输入推算的天数（正数向后推，负数向前推）：");
                 int num = sc.nextInt();
-                DateCalculator.date_plus_day(date1, num);
+
+                date1.showDate();
+                System.out.println("之后" + num + "天是");
+                Calculators.Calculation(date1, num);
                 break;
             }
             case DATE_INTERVAL: {
@@ -61,7 +64,7 @@ public class Run {
                 date2.month = sc.nextInt();
                 date2.day = sc.nextInt();
 
-                System.out.println(DateCalculator.date_interval(date1, date2));
+                System.out.println(Calculators.Interval(date1, date2));
                 break;
             }
             case EXIT: {
