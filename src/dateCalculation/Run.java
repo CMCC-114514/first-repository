@@ -1,4 +1,4 @@
-package datetools;
+package dateCalculation;
 
 import java.util.Scanner;
 
@@ -16,27 +16,26 @@ public class Run {
         System.out.flush();
     }
 
-    //输出菜单
-    public static void menu() {
-        System.out.println("////////\n日期计算器\n////////");
-        System.out.println("1.天数转年数\n2.日期推算\n3.日期间隔计算\n4.退出程序");
-        System.out.print("输入你的选择：");
-    }
-
     static Date date1 = new Date();
     static Date date2 = new Date();
     static Scanner sc = new Scanner(System.in);
 
     //主函数
     public static void main() {
-        menu();
+        System.out.print("""
+                ========== 日期计算器 ==========
+                1. 天数转年份
+                2. 日期推算
+                3. 日期间隔计算
+                输入选项：""");
+
         String choose = sc.next();
         clearConsole();
         switch (choose) {
             case DAY_TO_YEAR: {
                 System.out.print("输入天数：");
                 int num = sc.nextInt();
-                Calculators.Conversion(num).showNumOfYears();
+                Calculators.Conversion(num, 0).showNumOfYears();
                 break;
             }
             case DATE_PLUS_DAY: {
@@ -48,8 +47,7 @@ public class Run {
                 System.out.print("输入推算的天数（正数向后推，负数向前推）：");
                 int num = sc.nextInt();
 
-                date1.showDate();
-                System.out.println("之后" + num + "天是");
+                System.out.println("推算结果（可能会有1~3天的误差）：");
                 Calculators.Calculation(date1, num);
                 break;
             }
@@ -64,7 +62,7 @@ public class Run {
                 date2.month = sc.nextInt();
                 date2.day = sc.nextInt();
 
-                System.out.println(Calculators.Interval(date1, date2));
+                System.out.println("计算结果：" + Calculators.Interval(date1, date2) + "天");
                 break;
             }
             case EXIT: {

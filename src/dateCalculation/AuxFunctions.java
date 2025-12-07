@@ -1,8 +1,8 @@
-package datetools;
+package dateCalculation;
 
 //Helper类：存放辅助函数
-public class Helpers {
-    private Helpers(){}
+public class AuxFunctions {
+    private AuxFunctions(){}
 
     //辅助函数1：平年闰年判定
     //平年返回false，闰年返回true
@@ -54,5 +54,32 @@ public class Helpers {
             numOfDay += getDayOfMonth(i, endDate.year);
         }
         return numOfDay;
+    }
+
+    //辅助函数5：调整日期
+    //处理月份和天数溢出
+    public static void adjustDate(Date date) {
+
+//        // 调整天数溢出到月份
+//        while (date.day > getDayOfMonth(date.month, date.year)) {
+//            date.day -= getDayOfMonth(date.month, date.year);
+//            date.month++;
+//        }
+
+        // 调整月份溢出到年份
+        while (date.month > 12) {
+            date.month -= 12;
+            date.year++;
+        }
+
+        // 调整负数天数（向前借位）
+        while (date.day < 1) {
+            date.month--;
+            if (date.month < 1) {
+                date.month = 12;
+                date.year--;
+            }
+            date.day += getDayOfMonth(date.month, date.year);
+        }
     }
 }

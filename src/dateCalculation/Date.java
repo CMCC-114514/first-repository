@@ -1,4 +1,4 @@
-package datetools;
+package dateCalculation;
 
 //日期类
 public class Date {
@@ -42,10 +42,10 @@ public class Date {
     }
 
     public void showDate() {
-        System.out.println(year + "年" + month + "月" + day + "日");
+        System.out.print(year + "年" + month + "月" + day + "日");
     }
 
     public void showNumOfYears() {
-        System.out.println(year + "年" + month + "个月" + day + "天");
+        System.out.print(year + "年" + month + "个月" + day + "天");
     }
 }
